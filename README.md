@@ -31,48 +31,60 @@ curl http://logmill.online/api/v1/log/<log id>/qso/<qso id>?format=json | python
 Create
 ------
 
-```curl -d {....} -X POST http://logmill.online/api/v1/log/<log id>/qso
+```
+curl -d {....} -X POST http://logmill.online/api/v1/log/<log id>/qso
 {
   "_id" : "WAXdleLHS8innvdipSD1kw",
   "_ts": "2017-06-08T21:34:33.3456Z"
-}```
+}
+```
 
 
 Delete
 ------
 
-```curl -X DELETE http://logmill.online/api/v1/log/<log id>/qso/<qso id>```
+```
+curl -X DELETE http://logmill.online/api/v1/log/<log id>/qso/<qso id>
+```
 
 
 Update
 ------
 
-```curl -X PUT -d {...} http://logmill.online/api/v1/log/<log id>/qso/<qso id>```
+```
+curl -X PUT -d {...} http://logmill.online/api/v1/log/<log id>/qso/<qso id>
+```
 
 
 Query
 -----
 
-```curl http://logmill.online/api/v1/log/<log id>/qso/_query?...
+```
+curl http://logmill.online/api/v1/log/<log id>/qso/_query?...
 curl http://logmill.online/api/v1/log/<log id>/qso/_all
 curl http://logmill.online/api/v1/log/_all
 curl http://logmill.online/api/v1/log/_query?...
 query:
   start_time=...&end_time=...
   select=all
-  last=100```
+  last=100
+```
 
 
 Export
 ------
 
-```curl http://logmill.online/api/v1/log/<log id>/qso/_all?format=cabrillo```
+```
+curl http://logmill.online/api/v1/log/<log id>/qso/_all?format=cabrillo
+```
 
 
 WebSocket Subscribe
 -------------------
 
-```curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Host: logmill.online" -H http://logmill.online/api/v1/log/<log id>/_query?last=100
+```
+curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Host: logmill.online" -H http://logmill.online/api/v1/log/<log id>/_query?last=100
 [{...} ... {...}]
 {...}
-{...}```
+{...}
+```
