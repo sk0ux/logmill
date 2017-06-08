@@ -8,7 +8,8 @@ API
 Read
 ----
 
-```curl http://logmill.online/api/v1/log/<log id>/qso/<qso id>?format=json | python -m json.tool
+```
+curl http://logmill.online/api/v1/log/<log id>/qso/<qso id>?format=json | python -m json.tool
 {
   "_id": "WAXdleLHS8innvdipSD1kw",
   "_ts": "2017-06-08T21:34:33.3456Z",
@@ -23,7 +24,8 @@ Read
       "type": ...
     }
   }
-}```
+}
+```
 
 
 Create
