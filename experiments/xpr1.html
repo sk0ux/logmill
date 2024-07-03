@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+  <style>
+    body {
+	background: #dcdcdc;
+    }
+  </style>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.find.min.js"></script>
+  </head>
+  <body>
+    <h1>LogMill!</h1>
+
+    <table id="log" border="1px solid black;">
+      <tr>
+	<th width="300">time</th>
+	<th width="100">band</th>
+	<th width="100">freq</th>
+	<th width="100">mode</th>
+	<th width="100">callsign</th>
+	<th width="100">sent</th>
+	<th width="100">rcvd</th>
+	<th width="100">stn</th>
+	<th width="100">operator</th>
+      </tr>
+    </table>
+    &nbsp;<br />
+    <form onSubmit="console.log('foobar'); log(); return false;">
+    <table id="gol" border="1px solif black;">
+      <tr>
+	<td width="300"><input type="text" size="35" id="time"></input></td>
+	<td width="100"><input type="text" size="10" id="band"></input></td>
+	<td width="100"><input type="text" size="10" id="freq"></input></td>
+	<td width="100"><input type="text" size="10" id="mode"></input></td>
+	<td width="100"><input type="text" size="10" id="call" onKeyUp=""></input></td>
+	<td width="100"><input type="text" size="10" id="sent"></input></td>
+	<td width="100"><input type="text" size="10" id="rcvd" onKeyUp="log0();"></input></td>
+	<td width="100"><input type="text" size="10" id="stn"></input></td>
+	<td width="100"><input type="text" size="10" id="op"></input></td>
+      </tr>
+    </table>
+    </form>
+    <script>
+      function log0(e) {
+	  var x = e || window.event;
+	  var key = (x.keyCode || x.which);
+	  if (key == 13 || key == 3) {
+	      log();
+	  }
+      }
+
+      document.onkeypress = log0;
+
+      var db = new PouchDB("logmill");
+      //db.destroy()
+      //var db = new PouchDB("logmill");
+      function log() {
+	  ts = new Date().toISOString()
+	  var le = {
+	      _id: ts,
+	      timestamp: Date.UTC(),
+	      qsotime: ts,
+	      band: "80",
+	      frequency: 3551.5,
+	      mode: "CW",
+	      callsign: "SJ2W",
+	      sent: "599",
+	      received: "599",
+	      station: "R",
+	      class: {
+		  type: "multi1",
+		  operator: "SA0LAT"
+	      },
+	      contest: {
+		  type: "IARU",
+		  exchange: 18
+	      }
+	  };
+	  db.put(le, function callback(err, result) {
+	      if(!err) {
+		  console.log("logged");
+	      }
+	  });
+	  db.allDocs({include_docs: true, descending: true, limit: 10}, function(err, doc) {
+	      var tab = document.getElementById("log");
+	      tab.rows = [];
+	      doc.rows.reverse().forEach(function(ll) {
+		  ll = ll.doc;
+		  console.log(ll);
+		  var row = document.createElement('tr');
+		  row.innerHTML = "<tr><th>" + ll.qsotime + "</th><th>" + ll.band + "</th><th>" + ll.frequency + "</th>" +
+		      "<th>" + ll.mode + "</th><th>" + ll.callsign + "</th><th>" + ll.sent + "</th>" +
+		      "<th>" + ll.received + " " + ll.contest.exchange + "</th><th>" + ll.station + "</th>" +
+		      "<th>" + ll.class.operator + "</th></tr>";
+		  tab.appendChild(row);
+	      });
+	  });
+	  /*
+	    db.allDocs({include_docs: true, descending: false}, function(err, doc) {
+	    var tab = document.getElementById("log");
+	    tab.rows = [];
+	    doc.rows.slice(-10).forEach(function(ll) {
+	    ll = ll.doc;
+	    console.log(ll);
+	    var row = document.createElement('tr');
+	    console.log(typeof ll._id)
+	    console.log(typeof ll.qsotime)
+	    row.innerHTML = "<tr><th>" + ll.qsotime + "</th><th>" + ll.band + "</th><th>" + ll.frequency + "</th>" +
+	    "<th>" + ll.mode + "</th><th>" + ll.callsign + "</th><th>" + ll.sent + "</th>" +
+	    "<th>" + ll.received + " " + ll.contest.exchange + "</th><th>" + ll.station + "</th>" +
+	    "<th>" + ll.class.operator + "</th></tr>";
+	    tab.appendChild(row);
+	    });
+	    }); */
+      }
+    </script>
+  </body>
+</html>
